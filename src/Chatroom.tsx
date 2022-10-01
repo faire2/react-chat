@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Socket } from "socket.io-client"
-import { Transmissions } from "./utils"
+import { Message, Transmissions } from "./utils"
 
 interface Props {
 	socket: Socket
@@ -9,6 +9,11 @@ interface Props {
 export default function Chatroom({socket}: Props) {
 	const [newMessage, setNewMessage] = useState('')
 
+	const message: Message = {
+		message: newMessage,
+		userId: socket.id
+	}
+
 	return (
 		<>
 			<input
@@ -16,8 +21,7 @@ export default function Chatroom({socket}: Props) {
 				placeholder="Type in a message..."
 				onChange={(event) => setNewMessage(event.target.value)}
 				onBlur={() => socket.emit(
-					Transmissions.SendNewMessage,
-					{message: newMessage})
+					Transmissions.SendNewMessage, message)
 				}
 			/>
 		</>
