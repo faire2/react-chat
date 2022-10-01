@@ -12,7 +12,7 @@ export default function Chatroom({socket}: Props) {
 	const [messages, setMessages] = useState<Message[]>([])
 
 	const message: Message = {
-		message: newMessage,
+		text: newMessage,
 		userId: socket.id
 	}
 
@@ -24,6 +24,18 @@ export default function Chatroom({socket}: Props) {
 
 	return (
 		<>
+			<div>
+				{messages.map((message) => (
+					<div className={
+						socket.id === message.userId ? "message own" : "message"
+					}>
+						<div className="user-id">{message.userId}</div>
+						<div className="text">
+							{message.text}
+						</div>
+					</div>
+				))}
+			</div>
 			<input
 				value={newMessage}
 				placeholder="Type in a message..."

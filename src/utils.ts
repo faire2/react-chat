@@ -5,7 +5,7 @@ export enum Transmissions {
 
 
 export interface Message {
-	message: string
+	text: string
 	userId: string
 }
 export type NewMessages = Message[]
