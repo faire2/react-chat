@@ -2,6 +2,7 @@ import cors from "cors"
 import express from "express"
 import http from "http"
 import { Server } from "socket.io"
+import { Message, Transmissions } from "../utils"
 
 const app = express()
 app.use(cors())
@@ -16,8 +17,16 @@ const io = new Server(server, {
 	}
 })
 
+const messages: Message[] = []
+
 io.on('connection', (socket) => {
 	console.log(`Logged  in: ${socket.id}`)
+
+	socket.on(Transmissions.SendNewMessage, (transmission: Message) => {
+		messages.push(transmission)
+		io.emit(Transmissions.NewMessages, messages)
+		console.log(`${messages.length} messages sent`)
+	})
 
 	socket.on('disconnect', () => {
 		console.log(`Logged out: ${socket.id}`)
